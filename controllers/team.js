@@ -1,11 +1,11 @@
-const boardService = require('../services/board');
+const teamService = require('../services/team');
 
 const getAll = async (req, res) => {
     try {
-        const result = await boardService.getAll();
+        const result = await teamService.getAll();
 
         if(!result || !result.length) {
-            res.status(404).json('No boards found');
+            res.status(404).json('No teams found');
         }
         
         res.status(200).json(result);
@@ -19,8 +19,17 @@ const create = async (req, res) => {
         res.status(400).json('Field name is required');
     }
 
+    if(!req.file) {
+        res.status(400).json('Image file is required');
+    }
+
+    const teamBody = {
+        name: req.body.name,
+        image: '/uploads/' + req.file.originalname
+    };
+
     try {
-        const result = await boardService.create(req.body);
+        const result = await teamService.create(teamBody);
 
         res.status(200).json(result);
     } catch (err) {
@@ -33,10 +42,10 @@ const get = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const result = await boardService.get(id);
+        const result = await teamService.get(id);
 
         if(!result || !result.length) {
-            res.status(404).json('Board not found');
+            res.status(404).json('Team not found');
         }
 
         res.status(200).json(result);
@@ -49,23 +58,37 @@ const get = async (req, res) => {
 const update = async (req, res) => {
     const id = req.params.id;
 
+    let teamResult = {};
+
+    try {
+        teamResult = await teamService.get(id);
+    } catch (err) {
+        res.status(500).json(err.message);
+    }
+
     if (!req.body.name) {
         res.status(400).json('Field name is required');
     }
 
-    const board = {
+    if(!teamResult || !teamResult.length) {
+        res.status(404).json('Team not found');
+    }
+
+
+    let image = teamResult.image;
+
+    if(req.file) {
+        image = '/uploads/' + req.file.originalname;
+    }
+
+    const team = {
         id: id,
-        name: req.body.name
+        name: req.body.name,
+        image: image
     }
 
     try {
-        const boardResult = await boardService.get(id);
-
-        if(!boardResult || !boardResult.length) {
-            res.status(404).json('Board not found');
-        }
-
-        const result = await boardService.update(board);
+        const result = await teamService.update(team);
 
         res.status(200).json(result);
     } catch (err) {
@@ -78,13 +101,13 @@ const remove = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const board = await boardService.get(id);
+        const team = await teamService.get(id);
 
-        if(!board || !board.length) {
-            res.status(404).json('Board not found');
+        if(!team || !team.length) {
+            res.status(404).json('Team not found');
         }
 
-        const result = await boardService.remove(id);
+        const result = await teamService.remove(id);
         res.status(200).json(result);
     } catch (err) {
         console.error(err);
