@@ -7,34 +7,34 @@ const getAll = async (req, res) => {
         const result = await userService.getAll();
 
         if(!result || result.length < 1) {
-            res.status(404).json('No users found');
+            return res.status(404).json('No users found');
         }
         
-        res.status(200).json(result);
+        return res.status(200).json(result);
     } catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 
 const create = async (req, res) => {
     if (!req.body.name) {
-        res.status(400).json('Field name is required');
+        return res.status(400).json('Field name is required');
     }
 
     if (!req.body.email) {
-        res.status(400).json('Field email is required');
+        return res.status(400).json('Field email is required');
     }
 
     if (!req.body.password) {
-        res.status(400).json('Field password is required');
+        return res.status(400).json('Field password is required');
     }
 
     if (!req.body.board_id) {
-        res.status(400).json('Field board_id is required');
+        return res.status(400).json('Field board_id is required');
     }
 
     if(!req.file) {
-        res.status(400).json('Image file is required');
+        return res.status(400).json('Image file is required');
     }
 
     const password = bcrypt.hashSync(req.body.password, 10);
@@ -55,10 +55,10 @@ const create = async (req, res) => {
     try {
         const result = await userService.create(userBody);
 
-        res.status(200).json(result);
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 
@@ -69,13 +69,13 @@ const get = async (req, res) => {
         const result = await userService.get(id);
 
         if(!result || result.length < 1) {
-            res.status(404).json('User not found');
+            return res.status(404).json('User not found');
         }
 
-        res.status(200).json(result);
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 
@@ -87,11 +87,11 @@ const update = async (req, res) => {
     try {
         userResult = await userService.get(id);
     } catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 
     if(!userResult || !userResult.length) {
-        res.status(404).json('User not found');
+        return res.status(404).json('User not found');
     }
 
 
@@ -118,10 +118,10 @@ const update = async (req, res) => {
     try {
         const result = await userService.update(user);
 
-        res.status(200).json(result);
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 
@@ -132,14 +132,14 @@ const remove = async (req, res) => {
         const user = await userService.get(id);
 
         if(!user || !user.length) {
-            res.status(404).json('User not found');
+            return res.status(404).json('User not found');
         }
 
         const result = await userService.remove(id);
-        res.status(200).json(result);
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 
@@ -165,8 +165,6 @@ const login = async (req, res) => {
         }
 
         const validPassword = bcrypt.compareSync(req.body.password, result.password)
-
-        console.log("Ola: ",validPassword)
 
         if (validPassword) {
             const token = jwt.sign(

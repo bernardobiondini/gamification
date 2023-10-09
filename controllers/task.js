@@ -1,11 +1,11 @@
-const teamService = require('../services/team');
+const taskService = require('../services/task');
 
 const getAll = async (req, res) => {
     try {
-        const result = await teamService.getAll();
+        const result = await taskService.getAll();
 
         if(!result || result.length < 1) {
-            return res.status(404).json('No teams found');
+            return res.status(404).json('No tasks found');
         }
         
         return res.status(200).json(result);
@@ -19,17 +19,22 @@ const create = async (req, res) => {
         return res.status(400).json('Field name is required');
     }
 
-    if(!req.file) {
-        return res.status(400).json('Image file is required');
+    if (!req.body.description) {
+        return res.status(400).json('Field description is required');
     }
 
-    const teamBody = {
+    if (!req.body.points) {
+        return res.status(400).json('Field points is required');
+    }
+
+    const task = {
         name: req.body.name,
-        image: '/uploads/' + req.file.filename
+        description: req.body.description,
+        points: req.body.points
     };
 
     try {
-        const result = await teamService.create(teamBody);
+        const result = await taskService.create(task);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -42,10 +47,10 @@ const get = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const result = await teamService.get(id);
+        const result = await taskService.get(id);
 
         if(!result || result.length < 1) {
-            return res.status(404).json('Team not found');
+            return res.status(404).json('Task not found');
         }
 
         return res.status(200).json(result);
@@ -58,36 +63,34 @@ const get = async (req, res) => {
 const update = async (req, res) => {
     const id = req.params.id;
 
-    let teamResult = {};
-
-    try {
-        teamResult = await teamService.get(id);
-    } catch (err) {
-        return res.status(500).json(err.message);
-    }
-
-    if(!teamResult || !teamResult.length) {
-        return res.status(404).json('Team not found');
-    }
-
     if (!req.body.name) {
         return res.status(400).json('Field name is required');
     }
 
-    let image = teamResult.image;
-
-    if(req.file) {
-        image = '/uploads/' + req.file.filename;
+    if (!req.body.description) {
+        return res.status(400).json('Field description is required');
     }
 
-    const team = {
+    if (!req.body.points) {
+        return res.status(400).json('Field points is required');
+    }
+
+
+    const task = {
         id: id,
         name: req.body.name,
-        image: image
+        description: req.body.description,
+        points: req.body.points
     }
 
     try {
-        const result = await teamService.update(team);
+        const taskResult = await taskService.get(id);
+
+        if(!taskResult || taskResult.length < 1) {
+            return res.status(404).json('Task not found');
+        }
+
+        const result = await taskService.update(task);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -100,13 +103,13 @@ const remove = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const team = await teamService.get(id);
+        const task = await taskService.get(id);
 
-        if(!team || !team.length) {
-            return res.status(404).json('Team not found');
+        if(!task || task.length < 1) {
+            return res.status(404).json('Task not found');
         }
 
-        const result = await teamService.remove(id);
+        const result = await taskService.remove(id);
         return res.status(200).json(result);
     } catch (err) {
         console.error(err);

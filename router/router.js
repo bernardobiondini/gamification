@@ -1,12 +1,29 @@
 const router = require('express').Router();
-const path = require("path"); 
 
 const boardController = require('../controllers/board');
 const teamController = require('../controllers/team');
 const userController = require('../controllers/user');
+const taskController = require('../controllers/task');
 
 const login = require('../middlewares/login');
 const upload = require('../middlewares/upload');
+
+router.route('/boards')
+        .get(login, boardController.getAll)
+        .post(login, boardController.create);
+router.route('/boards/:id')
+        .get(login, boardController.get)
+        .put(login, boardController.update)
+        .delete(login, boardController.remove);
+
+// Tasks routes
+router.route('/tasks')
+        .get(login, taskController.getAll)
+        .post(login, taskController.create);
+router.route('/tasks/:id', login)
+        .get(login, taskController.get)
+        .put(login, taskController.update)
+        .delete(login, taskController.remove);
 
 // Boards routes
 router.route('/boards')
