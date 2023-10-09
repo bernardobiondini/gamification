@@ -15,6 +15,10 @@ const getAll = async (req, res) => {
 };
 
 const create = async (req, res) => {
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
+
     if (!req.body.name) {
         return res.status(400).json('Field name is required');
     }
@@ -49,6 +53,10 @@ const get = async (req, res) => {
 const update = async (req, res) => {
     const id = req.params.id;
 
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
+
     if (!req.body.name) {
         return res.status(400).json('Field name is required');
     }
@@ -76,6 +84,10 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     const id = req.params.id;
+
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
 
     try {
         const board = await boardService.get(id);

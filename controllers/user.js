@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const getAll = async (req, res) => {
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
+
     try {
         const result = await userService.getAll();
 
@@ -82,6 +86,10 @@ const get = async (req, res) => {
 const update = async (req, res) => {
     const id = req.params.id;
 
+    if(req.user.id != id && !req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
+
     let userResult = {};
 
     try {
@@ -93,7 +101,6 @@ const update = async (req, res) => {
     if(!userResult || !userResult.length) {
         return res.status(404).json('User not found');
     }
-
 
     let image = userResult.image;
 
@@ -127,6 +134,10 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     const id = req.params.id;
+    
+    if(req.user.id != id && !req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
 
     try {
         const user = await userService.get(id);
