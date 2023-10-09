@@ -4,7 +4,7 @@ const getAll = async (req, res) => {
     try {
         const result = await boardService.getAll();
 
-        if(!result || !result.length) {
+        if(!result || result.length < 1) {
             res.status(404).json('No boards found');
         }
         
@@ -35,7 +35,7 @@ const get = async (req, res) => {
     try {
         const result = await boardService.get(id);
 
-        if(!result || !result.length) {
+        if(!result || result.length < 1) {
             res.status(404).json('Board not found');
         }
 
