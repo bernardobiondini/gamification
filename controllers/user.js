@@ -113,7 +113,7 @@ const update = async (req, res) => {
         active: req.body.active ?? userResult.active,
         board_id: req.body.board_id ?? userResult.board_id,
         team_id: req.body.team_id ?? userResult.team_id
-    }
+    };
 
     try {
         const result = await userService.update(user);
@@ -141,7 +141,7 @@ const remove = async (req, res) => {
         console.error(err);
         return res.status(500).json(err.message);
     }
-}
+};
 
 const login = async (req, res) => {
     if (!req.body.email) {
@@ -155,7 +155,7 @@ const login = async (req, res) => {
     const field = {
         field: 'email',
         value: req.body.email
-    }
+    };
 
     try {
         const result = await userService.getBy(field);
@@ -164,7 +164,7 @@ const login = async (req, res) => {
             return res.status(401).json('Falha na autenticação');
         }
 
-        const validPassword = bcrypt.compareSync(req.body.password, result.password)
+        const validPassword = bcrypt.compareSync(req.body.password, result.password);
 
         if (validPassword) {
             const token = jwt.sign(
@@ -175,7 +175,7 @@ const login = async (req, res) => {
                 },
                 process.env.JWT_KEY,
                 {
-                    expiresIn: "1d"
+                    expiresIn: '1d'
                 }
             );
 
@@ -185,12 +185,12 @@ const login = async (req, res) => {
             });
         }
 
-        return res.status(401).json('Falha na autenticação')
+        return res.status(401).json('Falha na autenticação');
     } catch (err) {
         console.error(err);
         return res.status(500).json(err.message);
     }
 
-}
+};
 
 module.exports = {getAll, create, update, remove, get, login};

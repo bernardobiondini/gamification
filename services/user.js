@@ -3,16 +3,16 @@ const database = require('../database/config');
 const getAll = async () => {
     try {
         const result = await database('users')
-                            .select('users.name', 'users.email', 'users.image', 'boards.name as board_name', 'boards.id as board_id', 'teams.id as team_id', 'teams.name as team_name')
-                            .join('boards', 'users.board_id', 'boards.id')
-                            .join('teams', 'users.team_id', 'teams.id')
-                            .where('users.active', 1);
+            .select('users.name', 'users.email', 'users.image', 'boards.name as board_name', 'boards.id as board_id', 'teams.id as team_id', 'teams.name as team_name')
+            .join('boards', 'users.board_id', 'boards.id')
+            .join('teams', 'users.team_id', 'teams.id')
+            .where('users.active', 1);
 
         return result;
     } catch (err) {
         throw err;
     }
-}
+};
 
 const create = async (userBody) => {
     try {
@@ -22,7 +22,7 @@ const create = async (userBody) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const update = async (userBody) => {
     try {
@@ -32,7 +32,7 @@ const update = async (userBody) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const remove = async (id) => {
     try {
@@ -42,7 +42,7 @@ const remove = async (id) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const get = async (id) => {
     try {
@@ -52,7 +52,7 @@ const get = async (id) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const getBy = async (field) => {
     try {
@@ -62,6 +62,6 @@ const getBy = async (field) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 module.exports = {getAll, create, update, remove, get, getBy};

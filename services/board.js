@@ -8,7 +8,7 @@ const getAll = async () => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const create = async (boardBody) => {
     try {
@@ -18,7 +18,7 @@ const create = async (boardBody) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const update = async (boardBody) => {
     try {
@@ -28,7 +28,7 @@ const update = async (boardBody) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const remove = async (id) => {
     try {
@@ -38,7 +38,7 @@ const remove = async (id) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 const get = async (id) => {
     try {
@@ -48,6 +48,6 @@ const get = async (id) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
 module.exports = {getAll, create, update, remove, get};

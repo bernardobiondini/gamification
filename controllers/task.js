@@ -81,7 +81,7 @@ const update = async (req, res) => {
         name: req.body.name,
         description: req.body.description,
         points: req.body.points
-    }
+    };
 
     try {
         const taskResult = await taskService.get(id);
@@ -115,6 +115,6 @@ const remove = async (req, res) => {
         console.error(err);
         return res.status(500).json(err.message);
     }
-}
+};
 
 module.exports = {getAll, create, update, remove, get};

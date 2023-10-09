@@ -56,7 +56,7 @@ const update = async (req, res) => {
     const board = {
         id: id,
         name: req.body.name
-    }
+    };
 
     try {
         const boardResult = await boardService.get(id);
@@ -90,6 +90,6 @@ const remove = async (req, res) => {
         console.error(err);
         return res.status(500).json(err.message);
     }
-}
+};
 
 module.exports = {getAll, create, update, remove, get};

@@ -3,10 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = async function(knex) {
-  await knex.schema.createTableIfNotExists('boards', (table) => {
-    table.increments('id').primary();
-    table.string('name', 50).notNull();
-  })
+    await knex.schema.createTableIfNotExists('boards', (table) => {
+        table.increments('id').primary();
+        table.string('name', 50).notNull();
+    });
 };
 
 /**
@@ -14,5 +14,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-  await knex.schema.dropTableIfExists('boards');
+    await knex.schema.dropTableIfExists('boards');
 };
