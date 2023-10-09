@@ -4,7 +4,7 @@ const getAll = async (req, res) => {
     try {
         const result = await teamService.getAll();
 
-        if(!result || !result.length) {
+        if(!result || result.length < 1) {
             res.status(404).json('No teams found');
         }
         
@@ -23,9 +23,11 @@ const create = async (req, res) => {
         res.status(400).json('Image file is required');
     }
 
+    console.log(req.file);
+
     const teamBody = {
         name: req.body.name,
-        image: '/uploads/' + req.file.originalname
+        image: '/uploads/' + req.file.filename
     };
 
     try {
@@ -44,7 +46,7 @@ const get = async (req, res) => {
     try {
         const result = await teamService.get(id);
 
-        if(!result || !result.length) {
+        if(!result || result.length < 1) {
             res.status(404).json('Team not found');
         }
 
@@ -78,7 +80,7 @@ const update = async (req, res) => {
     let image = teamResult.image;
 
     if(req.file) {
-        image = '/uploads/' + req.file.originalname;
+        image = '/uploads/' + req.file.filename;
     }
 
     const team = {
