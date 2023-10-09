@@ -62,6 +62,10 @@ const get = async (req, res) => {
 };
 
 const update = async (req, res) => {
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
+
     const id = req.params.id;
 
     if (!req.body.cancelled) {
@@ -95,6 +99,10 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     const id = req.params.id;
+
+    if(!req.user.admin) {
+        return res.status(401).json('Unauthorized');
+    }
 
     try {
         const point = await pointService.get(id);
