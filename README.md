@@ -16,4 +16,4 @@ Player (PK: id, String name, FK: board_id, FK: team_id, String image)
 
 Task (PK: id, String name, String description, int point)
 
-Point (PK: id, FK: player_id, FK: board_id, FK: task_id, String description, boolean approved, boolean cancelled, String date)
+Point (PK: id, FK: player_id, FK: task_id, String description, boolean approved, boolean cancelled, String date)

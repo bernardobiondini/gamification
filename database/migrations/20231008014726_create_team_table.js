@@ -7,7 +7,7 @@ exports.up = async function(knex) {
         table.increments('id').primary();
         table.string('name', 50).notNull();
         table.string('image', 255).notNull();
-    })
+    });
 };
 
 /**
@@ -15,5 +15,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-    await knex.schema.dropTableIfExists('teams')
+    await knex.schema.dropTableIfExists('teams');
 };

@@ -15,7 +15,7 @@ exports.up = async function(knex) {
         table.integer('team_id').unsigned();
         table.foreign('board_id').references('boards.id');
         table.foreign('team_id').references('teams.id');
-      })
+    });
 };
 
 /**

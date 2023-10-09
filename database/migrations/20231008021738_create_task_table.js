@@ -8,7 +8,7 @@ exports.up = async function(knex) {
         table.string('name', 50).notNull();
         table.string('description', 255).notNull();
         table.integer('points').notNull();
-    })
+    });
 };
 
 /**

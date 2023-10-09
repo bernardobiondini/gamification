@@ -4,10 +4,12 @@ const boardController = require('../controllers/board');
 const teamController = require('../controllers/team');
 const userController = require('../controllers/user');
 const taskController = require('../controllers/task');
+const pointController = require('../controllers/point');
 
 const login = require('../middlewares/login');
 const upload = require('../middlewares/upload');
 
+// Boards routes
 router.route('/boards')
     .get(login, boardController.getAll)
     .post(login, boardController.create);
@@ -24,15 +26,6 @@ router.route('/tasks/:id', login)
     .get(login, taskController.get)
     .put(login, taskController.update)
     .delete(login, taskController.remove);
-
-// Boards routes
-router.route('/boards')
-    .get(login, boardController.getAll)
-    .post(login, boardController.create);
-router.route('/boards/:id', login)
-    .get(login, boardController.get)
-    .put(login, boardController.update)
-    .delete(login, boardController.remove);
 
 // Teams routes
 router.route('/teams')
@@ -52,5 +45,14 @@ router.route('/users/:id')
     .put(login, upload.single('image'), userController.update)
     .delete(login, userController.remove);
 router.post('/login', userController.login);
+
+// Points routes
+router.route('/points')
+    .get(login, pointController.getAll)
+    .post(login, upload.single('image'), pointController.create);
+router.route('/points/:id', login)
+    .get(login, pointController.get)
+    .put(login, upload.single('image'), pointController.update)
+    .delete(login, pointController.remove);
 
 module.exports = router;
